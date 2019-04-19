@@ -1,0 +1,21 @@
+Launch instane and ssh
+cat /proc/cpuinfo
+
+sudo apt-get update
+sudo apt-get -y -qq install git
+git --version
+
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+cd training-data-analyst/courses/machine_learning/deepdive/01_googleml/earthquakes
+less ingest.sh
+bash ingest.sh
+head earthquakes.csv
+
+https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb
+bash install_missing.sh
+./transform.py
+ls -l
+
+create bucket with your project name
+gsutil cp earthquakes.* gs://<YOUR-BUCKET>/earthquakes/
+gsutil acl ch -u AllUsers:R gs://<YOUR-BUCKET>/earthquakes/*

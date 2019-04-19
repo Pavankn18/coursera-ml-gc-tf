@@ -1,0 +1,17 @@
+Clone setup
+
+%bash 
+git clone https://github.com/Pavankn18/coursera-ml-gc-tf.git
+
+
+cd coursera-ml-gc-tf/code/ 
+pwd 
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst 
+rm -rf training-data-analyst/.git
+
+Create datalab instance
+Create api key (api service -> create -> api key)
+
+
+Follow notebook : 
+https://github.com/Pavankn18/coursera-ml-gc-tf/blob/master/code/training-data-analyst/CPB100/lab4c/mlapis.ipynb
