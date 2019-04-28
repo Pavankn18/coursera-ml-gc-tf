@@ -1,0 +1,11 @@
+https://github.com/Pavankn18/coursera-ml-gc-tf.git
+Week1 
+	LAb1: https://github.com/Pavankn18/coursera-ml-gc-tf/blob/e9bd8262bdf15bbc7ca1aa85f535b5a3065baa6f/code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/a_tfstart.ipynb
+
+Week2
+	lab1: code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/b_estimator.ipynb
+	lab2: code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/labs/b_estimator.ipynb
+	lab3: code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/labs/c_dataset.ipynb
+	
+week 3: 
+	lab1: code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/labs/e_cloudmle-checkpoint.ipynb
