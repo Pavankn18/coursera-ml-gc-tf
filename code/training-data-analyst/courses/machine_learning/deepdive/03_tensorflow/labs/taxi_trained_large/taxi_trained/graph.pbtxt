@@ -39,6 +39,7 @@ node {
 node {
   name: "global_step"
   op: "VariableV2"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -87,6 +88,7 @@ node {
   op: "Assign"
   input: "global_step"
   input: "global_step/Initializer/zeros"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -127,6 +129,7 @@ node {
   name: "global_step/read"
   op: "Identity"
   input: "global_step"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -155,6 +158,7 @@ node {
   name: "global_step/IsVariableInitialized"
   op: "IsVariableInitialized"
   input: "global_step"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -184,6 +188,7 @@ node {
   op: "Switch"
   input: "global_step/IsVariableInitialized"
   input: "global_step/IsVariableInitialized"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -206,6 +211,7 @@ node {
   name: "global_step/cond/switch_t"
   op: "Identity"
   input: "global_step/cond/Switch:1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -226,6 +232,7 @@ node {
   name: "global_step/cond/switch_f"
   op: "Identity"
   input: "global_step/cond/Switch"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -246,6 +253,7 @@ node {
   name: "global_step/cond/pred_id"
   op: "Identity"
   input: "global_step/IsVariableInitialized"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -266,6 +274,7 @@ node {
   name: "global_step/cond/read"
   op: "Identity"
   input: "global_step/cond/read/Switch:1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -287,6 +296,7 @@ node {
   op: "RefSwitch"
   input: "global_step"
   input: "global_step/cond/pred_id"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -349,6 +359,7 @@ node {
   op: "Merge"
   input: "global_step/cond/Switch_1"
   input: "global_step/cond/read"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -376,6 +387,7 @@ node {
 node {
   name: "global_step/add/y"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -408,6 +420,7 @@ node {
   op: "Add"
   input: "global_step/cond/Merge"
   input: "global_step/add/y"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -427,7 +440,7 @@ node {
 node {
   name: "filenames"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -456,7 +469,7 @@ node {
             size: 1
           }
         }
-        string_val: "/content/datalab/coursera-ml-gc-tf/code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/labs/taxi-train.csv"
+        string_val: "gs://cloud-training-demos/taxifare/ch3/train.csv"
       }
     }
   }
@@ -464,7 +477,7 @@ node {
 node {
   name: "compression_type"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -495,7 +508,7 @@ node {
 node {
   name: "buffer_size"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -526,7 +539,7 @@ node {
 node {
   name: "buffer_size_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -557,7 +570,7 @@ node {
 node {
   name: "seed"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -588,7 +601,7 @@ node {
 node {
   name: "seed2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -619,7 +632,7 @@ node {
 node {
   name: "count"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -650,7 +663,7 @@ node {
 node {
   name: "batch_size"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -681,7 +694,7 @@ node {
 node {
   name: "OneShotIterator"
   op: "OneShotIterator"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -701,7 +714,7 @@ node {
     key: "dataset_factory"
     value {
       func {
-        name: "_make_dataset_CPXijqa1ttg"
+        name: "_make_dataset_3yKY23FrlsA"
       }
     }
   }
@@ -772,7 +785,7 @@ node {
   name: "IteratorToStringHandle"
   op: "IteratorToStringHandle"
   input: "OneShotIterator"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -787,7 +800,7 @@ node {
   name: "IteratorGetNext"
   op: "IteratorGetNext"
   input: "OneShotIterator"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -890,6 +903,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -922,6 +936,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -954,6 +969,7 @@ node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/Shape"
   op: "Shape"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -982,6 +998,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1018,6 +1035,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1054,6 +1072,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack_2"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1094,6 +1113,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack_1"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -1149,6 +1169,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflat/Reshape/shape/1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1181,6 +1202,7 @@ node {
   op: "Pack"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/strided_slice"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/Reshape/shape/1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -1217,6 +1239,7 @@ node {
   op: "Reshape"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/ExpandDims"
   input: "dnn/input_from_feature_columns/input_layer/dropofflat/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1248,6 +1271,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1280,6 +1304,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext:1"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1312,6 +1337,7 @@ node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/Shape"
   op: "Shape"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1340,6 +1366,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1376,6 +1403,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1412,6 +1440,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack_2"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1452,6 +1481,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack_1"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -1507,6 +1537,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/dropofflon/Reshape/shape/1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1539,6 +1570,7 @@ node {
   op: "Pack"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/strided_slice"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/Reshape/shape/1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -1575,6 +1607,7 @@ node {
   op: "Reshape"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/ExpandDims"
   input: "dnn/input_from_feature_columns/input_layer/dropofflon/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1606,6 +1639,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1638,6 +1672,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext:3"
   input: "dnn/input_from_feature_columns/input_layer/passengers/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1670,6 +1705,7 @@ node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/Shape"
   op: "Shape"
   input: "dnn/input_from_feature_columns/input_layer/passengers/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1698,6 +1734,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1734,6 +1771,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1770,6 +1808,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack_2"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1810,6 +1849,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack"
   input: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack_1"
   input: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -1865,6 +1905,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/passengers/Reshape/shape/1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1897,6 +1938,7 @@ node {
   op: "Pack"
   input: "dnn/input_from_feature_columns/input_layer/passengers/strided_slice"
   input: "dnn/input_from_feature_columns/input_layer/passengers/Reshape/shape/1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -1933,6 +1975,7 @@ node {
   op: "Reshape"
   input: "dnn/input_from_feature_columns/input_layer/passengers/ExpandDims"
   input: "dnn/input_from_feature_columns/input_layer/passengers/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -1964,6 +2007,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -1996,6 +2040,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext:4"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2028,6 +2073,7 @@ node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/Shape"
   op: "Shape"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2056,6 +2102,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2092,6 +2139,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2128,6 +2176,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack_2"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2168,6 +2217,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack_1"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -2223,6 +2273,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplat/Reshape/shape/1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2255,6 +2306,7 @@ node {
   op: "Pack"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/strided_slice"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/Reshape/shape/1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -2291,6 +2343,7 @@ node {
   op: "Reshape"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/ExpandDims"
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2322,6 +2375,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2354,6 +2408,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext:5"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2386,6 +2441,7 @@ node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/Shape"
   op: "Shape"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2414,6 +2470,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2450,6 +2507,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2486,6 +2544,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack_2"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2526,6 +2585,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack_1"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -2581,6 +2641,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/pickuplon/Reshape/shape/1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2613,6 +2674,7 @@ node {
   op: "Pack"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/strided_slice"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/Reshape/shape/1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -2649,6 +2711,7 @@ node {
   op: "Reshape"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/ExpandDims"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -2680,6 +2743,7 @@ node {
 node {
   name: "dnn/input_from_feature_columns/input_layer/concat/axis"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -2716,6 +2780,7 @@ node {
   input: "dnn/input_from_feature_columns/input_layer/pickuplat/Reshape"
   input: "dnn/input_from_feature_columns/input_layer/pickuplon/Reshape"
   input: "dnn/input_from_feature_columns/input_layer/concat/axis"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -3024,6 +3089,7 @@ node {
 node {
   name: "dnn/hiddenlayer_0/kernel/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -3084,6 +3150,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_0/kernel/part_0"
   input: "dnn/hiddenlayer_0/kernel/part_0/Initializer/random_uniform"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -3130,6 +3197,7 @@ node {
   name: "dnn/hiddenlayer_0/kernel/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_0/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -3207,6 +3275,7 @@ node {
 node {
   name: "dnn/hiddenlayer_0/bias/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -3261,6 +3330,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_0/bias/part_0"
   input: "dnn/hiddenlayer_0/bias/part_0/Initializer/zeros"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -3304,6 +3374,7 @@ node {
   name: "dnn/hiddenlayer_0/bias/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_0/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -3335,6 +3406,7 @@ node {
   name: "dnn/hiddenlayer_0/kernel"
   op: "Identity"
   input: "dnn/hiddenlayer_0/kernel/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3362,6 +3434,7 @@ node {
   op: "MatMul"
   input: "dnn/input_from_feature_columns/input_layer/concat"
   input: "dnn/hiddenlayer_0/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3400,6 +3473,7 @@ node {
   name: "dnn/hiddenlayer_0/bias"
   op: "Identity"
   input: "dnn/hiddenlayer_0/bias/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3424,6 +3498,7 @@ node {
   op: "BiasAdd"
   input: "dnn/hiddenlayer_0/MatMul"
   input: "dnn/hiddenlayer_0/bias"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3456,6 +3531,7 @@ node {
   name: "dnn/hiddenlayer_0/Relu"
   op: "Relu"
   input: "dnn/hiddenlayer_0/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3481,6 +3557,7 @@ node {
 node {
   name: "dnn/zero_fraction/zero"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -3513,6 +3590,7 @@ node {
   op: "Equal"
   input: "dnn/hiddenlayer_0/Relu"
   input: "dnn/zero_fraction/zero"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3539,6 +3617,7 @@ node {
   name: "dnn/zero_fraction/Cast"
   op: "Cast"
   input: "dnn/zero_fraction/Equal"
+  device: "/job:master/task:0"
   attr {
     key: "DstT"
     value {
@@ -3570,6 +3649,7 @@ node {
 node {
   name: "dnn/zero_fraction/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -3608,6 +3688,7 @@ node {
   op: "Mean"
   input: "dnn/zero_fraction/Cast"
   input: "dnn/zero_fraction/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3639,6 +3720,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/fraction_of_zero_values/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -3671,6 +3753,7 @@ node {
   op: "ScalarSummary"
   input: "dnn/dnn/hiddenlayer_0/fraction_of_zero_values/tags"
   input: "dnn/zero_fraction/Mean"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -3690,6 +3773,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/activation/tag"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -3722,6 +3806,7 @@ node {
   op: "HistogramSummary"
   input: "dnn/dnn/hiddenlayer_0/activation/tag"
   input: "dnn/hiddenlayer_0/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4012,6 +4097,7 @@ node {
 node {
   name: "dnn/hiddenlayer_1/kernel/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -4072,6 +4158,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_1/kernel/part_0"
   input: "dnn/hiddenlayer_1/kernel/part_0/Initializer/random_uniform"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -4118,6 +4205,7 @@ node {
   name: "dnn/hiddenlayer_1/kernel/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_1/kernel/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -4195,6 +4283,7 @@ node {
 node {
   name: "dnn/hiddenlayer_1/bias/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -4249,6 +4338,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_1/bias/part_0"
   input: "dnn/hiddenlayer_1/bias/part_0/Initializer/zeros"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -4292,6 +4382,7 @@ node {
   name: "dnn/hiddenlayer_1/bias/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_1/bias/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -4323,6 +4414,7 @@ node {
   name: "dnn/hiddenlayer_1/kernel"
   op: "Identity"
   input: "dnn/hiddenlayer_1/kernel/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4350,6 +4442,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_0/Relu"
   input: "dnn/hiddenlayer_1/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4388,6 +4481,7 @@ node {
   name: "dnn/hiddenlayer_1/bias"
   op: "Identity"
   input: "dnn/hiddenlayer_1/bias/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4412,6 +4506,7 @@ node {
   op: "BiasAdd"
   input: "dnn/hiddenlayer_1/MatMul"
   input: "dnn/hiddenlayer_1/bias"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4444,6 +4539,7 @@ node {
   name: "dnn/hiddenlayer_1/Relu"
   op: "Relu"
   input: "dnn/hiddenlayer_1/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4469,6 +4565,7 @@ node {
 node {
   name: "dnn/zero_fraction_1/zero"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -4501,6 +4598,7 @@ node {
   op: "Equal"
   input: "dnn/hiddenlayer_1/Relu"
   input: "dnn/zero_fraction_1/zero"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4527,6 +4625,7 @@ node {
   name: "dnn/zero_fraction_1/Cast"
   op: "Cast"
   input: "dnn/zero_fraction_1/Equal"
+  device: "/job:master/task:0"
   attr {
     key: "DstT"
     value {
@@ -4558,6 +4657,7 @@ node {
 node {
   name: "dnn/zero_fraction_1/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -4596,6 +4696,7 @@ node {
   op: "Mean"
   input: "dnn/zero_fraction_1/Cast"
   input: "dnn/zero_fraction_1/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4627,6 +4728,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/fraction_of_zero_values/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -4659,6 +4761,7 @@ node {
   op: "ScalarSummary"
   input: "dnn/dnn/hiddenlayer_1/fraction_of_zero_values/tags"
   input: "dnn/zero_fraction_1/Mean"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -4678,6 +4781,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/activation/tag"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -4710,6 +4814,7 @@ node {
   op: "HistogramSummary"
   input: "dnn/dnn/hiddenlayer_1/activation/tag"
   input: "dnn/hiddenlayer_1/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5000,6 +5105,7 @@ node {
 node {
   name: "dnn/hiddenlayer_2/kernel/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -5060,6 +5166,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_2/kernel/part_0"
   input: "dnn/hiddenlayer_2/kernel/part_0/Initializer/random_uniform"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -5106,6 +5213,7 @@ node {
   name: "dnn/hiddenlayer_2/kernel/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_2/kernel/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -5183,6 +5291,7 @@ node {
 node {
   name: "dnn/hiddenlayer_2/bias/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -5237,6 +5346,7 @@ node {
   op: "Assign"
   input: "dnn/hiddenlayer_2/bias/part_0"
   input: "dnn/hiddenlayer_2/bias/part_0/Initializer/zeros"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -5280,6 +5390,7 @@ node {
   name: "dnn/hiddenlayer_2/bias/part_0/read"
   op: "Identity"
   input: "dnn/hiddenlayer_2/bias/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -5311,6 +5422,7 @@ node {
   name: "dnn/hiddenlayer_2/kernel"
   op: "Identity"
   input: "dnn/hiddenlayer_2/kernel/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5338,6 +5450,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_1/Relu"
   input: "dnn/hiddenlayer_2/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5376,6 +5489,7 @@ node {
   name: "dnn/hiddenlayer_2/bias"
   op: "Identity"
   input: "dnn/hiddenlayer_2/bias/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5400,6 +5514,7 @@ node {
   op: "BiasAdd"
   input: "dnn/hiddenlayer_2/MatMul"
   input: "dnn/hiddenlayer_2/bias"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5432,6 +5547,7 @@ node {
   name: "dnn/hiddenlayer_2/Relu"
   op: "Relu"
   input: "dnn/hiddenlayer_2/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5457,6 +5573,7 @@ node {
 node {
   name: "dnn/zero_fraction_2/zero"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -5489,6 +5606,7 @@ node {
   op: "Equal"
   input: "dnn/hiddenlayer_2/Relu"
   input: "dnn/zero_fraction_2/zero"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5515,6 +5633,7 @@ node {
   name: "dnn/zero_fraction_2/Cast"
   op: "Cast"
   input: "dnn/zero_fraction_2/Equal"
+  device: "/job:master/task:0"
   attr {
     key: "DstT"
     value {
@@ -5546,6 +5665,7 @@ node {
 node {
   name: "dnn/zero_fraction_2/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -5584,6 +5704,7 @@ node {
   op: "Mean"
   input: "dnn/zero_fraction_2/Cast"
   input: "dnn/zero_fraction_2/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5615,6 +5736,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/fraction_of_zero_values/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -5647,6 +5769,7 @@ node {
   op: "ScalarSummary"
   input: "dnn/dnn/hiddenlayer_2/fraction_of_zero_values/tags"
   input: "dnn/zero_fraction_2/Mean"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5666,6 +5789,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/activation/tag"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -5698,6 +5822,7 @@ node {
   op: "HistogramSummary"
   input: "dnn/dnn/hiddenlayer_2/activation/tag"
   input: "dnn/hiddenlayer_2/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -5988,6 +6113,7 @@ node {
 node {
   name: "dnn/logits/kernel/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -6048,6 +6174,7 @@ node {
   op: "Assign"
   input: "dnn/logits/kernel/part_0"
   input: "dnn/logits/kernel/part_0/Initializer/random_uniform"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -6094,6 +6221,7 @@ node {
   name: "dnn/logits/kernel/part_0/read"
   op: "Identity"
   input: "dnn/logits/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -6171,6 +6299,7 @@ node {
 node {
   name: "dnn/logits/bias/part_0"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -6225,6 +6354,7 @@ node {
   op: "Assign"
   input: "dnn/logits/bias/part_0"
   input: "dnn/logits/bias/part_0/Initializer/zeros"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -6268,6 +6398,7 @@ node {
   name: "dnn/logits/bias/part_0/read"
   op: "Identity"
   input: "dnn/logits/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -6299,6 +6430,7 @@ node {
   name: "dnn/logits/kernel"
   op: "Identity"
   input: "dnn/logits/kernel/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6326,6 +6458,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_2/Relu"
   input: "dnn/logits/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6364,6 +6497,7 @@ node {
   name: "dnn/logits/bias"
   op: "Identity"
   input: "dnn/logits/bias/part_0/read"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6388,6 +6522,7 @@ node {
   op: "BiasAdd"
   input: "dnn/logits/MatMul"
   input: "dnn/logits/bias"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6419,6 +6554,7 @@ node {
 node {
   name: "dnn/zero_fraction_3/zero"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6451,6 +6587,7 @@ node {
   op: "Equal"
   input: "dnn/logits/BiasAdd"
   input: "dnn/zero_fraction_3/zero"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6477,6 +6614,7 @@ node {
   name: "dnn/zero_fraction_3/Cast"
   op: "Cast"
   input: "dnn/zero_fraction_3/Equal"
+  device: "/job:master/task:0"
   attr {
     key: "DstT"
     value {
@@ -6508,6 +6646,7 @@ node {
 node {
   name: "dnn/zero_fraction_3/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6546,6 +6685,7 @@ node {
   op: "Mean"
   input: "dnn/zero_fraction_3/Cast"
   input: "dnn/zero_fraction_3/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6577,6 +6717,7 @@ node {
 node {
   name: "dnn/dnn/logits/fraction_of_zero_values/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6609,6 +6750,7 @@ node {
   op: "ScalarSummary"
   input: "dnn/dnn/logits/fraction_of_zero_values/tags"
   input: "dnn/zero_fraction_3/Mean"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6628,6 +6770,7 @@ node {
 node {
   name: "dnn/dnn/logits/activation/tag"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6660,6 +6803,7 @@ node {
   op: "HistogramSummary"
   input: "dnn/dnn/logits/activation/tag"
   input: "dnn/logits/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6680,6 +6824,7 @@ node {
   name: "dnn/head/logits/Shape"
   op: "Shape"
   input: "dnn/logits/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6708,6 +6853,7 @@ node {
 node {
   name: "dnn/head/logits/assert_rank_at_least/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6738,14 +6884,17 @@ node {
 node {
   name: "dnn/head/logits/assert_rank_at_least/assert_type/statically_determined_correct_type"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/logits/assert_rank_at_least/static_checks_determined_all_ok"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/labels/ExpandDims/dim"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6778,6 +6927,7 @@ node {
   op: "ExpandDims"
   input: "IteratorGetNext:6"
   input: "dnn/head/labels/ExpandDims/dim"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6810,6 +6960,7 @@ node {
   name: "dnn/head/labels/Shape"
   op: "Shape"
   input: "dnn/head/labels/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6839,6 +6990,7 @@ node {
   name: "dnn/head/labels/Shape_1"
   op: "Shape"
   input: "dnn/logits/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6867,6 +7019,7 @@ node {
 node {
   name: "dnn/head/labels/assert_rank_at_least/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6898,6 +7051,7 @@ node {
   name: "dnn/head/labels/assert_rank_at_least/Shape"
   op: "Shape"
   input: "dnn/head/labels/ExpandDims"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -6926,15 +7080,18 @@ node {
 node {
   name: "dnn/head/labels/assert_rank_at_least/assert_type/statically_determined_correct_type"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/labels/strided_slice/stack"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -6972,6 +7129,7 @@ node {
   name: "dnn/head/labels/strided_slice/stack_1"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7009,6 +7167,7 @@ node {
   name: "dnn/head/labels/strided_slice/stack_2"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7049,6 +7208,7 @@ node {
   input: "dnn/head/labels/strided_slice/stack"
   input: "dnn/head/labels/strided_slice/stack_1"
   input: "dnn/head/labels/strided_slice/stack_2"
+  device: "/job:master/task:0"
   attr {
     key: "Index"
     value {
@@ -7108,6 +7268,7 @@ node {
   name: "dnn/head/labels/concat/values_1"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7145,6 +7306,7 @@ node {
   name: "dnn/head/labels/concat/axis"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7178,6 +7340,7 @@ node {
   input: "dnn/head/labels/strided_slice"
   input: "dnn/head/labels/concat/values_1"
   input: "dnn/head/labels/concat/axis"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -7214,6 +7377,7 @@ node {
   op: "Equal"
   input: "dnn/head/labels/concat"
   input: "dnn/head/labels/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7237,6 +7401,7 @@ node {
   name: "dnn/head/labels/assert_equal/Const"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7275,6 +7440,7 @@ node {
   op: "All"
   input: "dnn/head/labels/assert_equal/Equal"
   input: "dnn/head/labels/assert_equal/Const"
+  device: "/job:master/task:0"
   attr {
     key: "Tidx"
     value {
@@ -7301,6 +7467,7 @@ node {
   name: "dnn/head/labels/assert_equal/Assert/Const"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7332,6 +7499,7 @@ node {
   name: "dnn/head/labels/assert_equal/Assert/Const_1"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7363,6 +7531,7 @@ node {
   name: "dnn/head/labels/assert_equal/Assert/Assert/data_0"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7394,6 +7563,7 @@ node {
   name: "dnn/head/labels/assert_equal/Assert/Assert/data_2"
   op: "Const"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7429,6 +7599,7 @@ node {
   input: "dnn/head/labels/concat"
   input: "dnn/head/labels/assert_equal/Assert/Assert/data_2"
   input: "dnn/head/labels/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7453,6 +7624,7 @@ node {
   input: "dnn/head/labels/ExpandDims"
   input: "^dnn/head/labels/assert_equal/Assert/Assert"
   input: "^dnn/head/labels/assert_rank_at_least/static_checks_determined_all_ok"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7480,6 +7652,7 @@ node {
   op: "SquaredDifference"
   input: "dnn/logits/BiasAdd"
   input: "dnn/head/labels"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7505,6 +7678,7 @@ node {
 node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/weights"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7535,6 +7709,7 @@ node {
 node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/weights/shape"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7568,6 +7743,7 @@ node {
 node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/weights/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7599,6 +7775,7 @@ node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/values/shape"
   op: "Shape"
   input: "dnn/head/mean_squared_error/SquaredDifference"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7627,6 +7804,7 @@ node {
 node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/values/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7657,11 +7835,13 @@ node {
 node {
   name: "dnn/head/mean_squared_error/assert_broadcastable/static_scalar_check_success"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/mean_squared_error/ToFloat_3/x"
   op: "Const"
   input: "^dnn/head/mean_squared_error/assert_broadcastable/static_scalar_check_success"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7694,6 +7874,7 @@ node {
   op: "Mul"
   input: "dnn/head/mean_squared_error/SquaredDifference"
   input: "dnn/head/mean_squared_error/ToFloat_3/x"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7719,6 +7900,7 @@ node {
 node {
   name: "dnn/head/weighted_loss/assert_broadcastable/weights"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7749,6 +7931,7 @@ node {
 node {
   name: "dnn/head/weighted_loss/assert_broadcastable/weights/shape"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7782,6 +7965,7 @@ node {
 node {
   name: "dnn/head/weighted_loss/assert_broadcastable/weights/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7813,6 +7997,7 @@ node {
   name: "dnn/head/weighted_loss/assert_broadcastable/values/shape"
   op: "Shape"
   input: "dnn/head/mean_squared_error/Mul"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7841,6 +8026,7 @@ node {
 node {
   name: "dnn/head/weighted_loss/assert_broadcastable/values/rank"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7871,11 +8057,13 @@ node {
 node {
   name: "dnn/head/weighted_loss/assert_broadcastable/static_scalar_check_success"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/weighted_loss/ToFloat_1/x"
   op: "Const"
   input: "^dnn/head/weighted_loss/assert_broadcastable/static_scalar_check_success"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7908,6 +8096,7 @@ node {
   op: "Mul"
   input: "dnn/head/mean_squared_error/Mul"
   input: "dnn/head/weighted_loss/ToFloat_1/x"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -7934,6 +8123,7 @@ node {
   name: "dnn/head/weighted_loss/Const"
   op: "Const"
   input: "^dnn/head/weighted_loss/assert_broadcastable/static_scalar_check_success"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -7972,6 +8162,7 @@ node {
   op: "Sum"
   input: "dnn/head/weighted_loss/Mul"
   input: "dnn/head/weighted_loss/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8003,6 +8194,7 @@ node {
 node {
   name: "dnn/head/gradients/Shape"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -8036,6 +8228,7 @@ node {
 node {
   name: "dnn/head/gradients/grad_ys_0"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -8068,6 +8261,7 @@ node {
   op: "Fill"
   input: "dnn/head/gradients/Shape"
   input: "dnn/head/gradients/grad_ys_0"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8093,6 +8287,7 @@ node {
 node {
   name: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Reshape/shape"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -8131,6 +8326,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/Fill"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Reshape/shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8163,6 +8359,7 @@ node {
   name: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Shape"
   op: "Shape"
   input: "dnn/head/weighted_loss/Mul"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8193,6 +8390,7 @@ node {
   op: "Tile"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Reshape"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8225,6 +8423,7 @@ node {
   name: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape"
   op: "Shape"
   input: "dnn/head/mean_squared_error/Mul"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8253,6 +8452,7 @@ node {
 node {
   name: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -8288,6 +8488,7 @@ node {
   op: "BroadcastGradientArgs"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8317,6 +8518,7 @@ node {
   op: "Mul"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Tile"
   input: "dnn/head/weighted_loss/ToFloat_1/x"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8344,6 +8546,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Mul"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/BroadcastGradientArgs"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8378,6 +8581,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Sum"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8411,6 +8615,7 @@ node {
   op: "Mul"
   input: "dnn/head/mean_squared_error/Mul"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Sum_grad/Tile"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8438,6 +8643,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Mul_1"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/BroadcastGradientArgs:1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8472,6 +8678,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Sum_1"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8499,12 +8706,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Reshape"
   input: "^dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Reshape_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Reshape"
   input: "^dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8540,6 +8749,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/Reshape_1"
   input: "^dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8568,6 +8778,7 @@ node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape"
   op: "Shape"
   input: "dnn/head/mean_squared_error/SquaredDifference"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8596,6 +8807,7 @@ node {
 node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -8631,6 +8843,7 @@ node {
   op: "BroadcastGradientArgs"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8660,6 +8873,7 @@ node {
   op: "Mul"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/tuple/control_dependency"
   input: "dnn/head/mean_squared_error/ToFloat_3/x"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8687,6 +8901,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Mul"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/BroadcastGradientArgs"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8721,6 +8936,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8754,6 +8970,7 @@ node {
   op: "Mul"
   input: "dnn/head/mean_squared_error/SquaredDifference"
   input: "dnn/head/gradients/dnn/head/weighted_loss/Mul_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8781,6 +8998,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Mul_1"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/BroadcastGradientArgs:1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8815,6 +9033,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Sum_1"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8842,12 +9061,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Reshape"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Reshape_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Reshape"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8883,6 +9104,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/Reshape_1"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8911,6 +9133,7 @@ node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape"
   op: "Shape"
   input: "dnn/logits/BiasAdd"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8940,6 +9163,7 @@ node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape_1"
   op: "Shape"
   input: "dnn/head/labels"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8970,6 +9194,7 @@ node {
   op: "BroadcastGradientArgs"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -8998,6 +9223,7 @@ node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/scalar"
   op: "Const"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -9030,6 +9256,7 @@ node {
   op: "Mul"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/scalar"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9058,6 +9285,7 @@ node {
   input: "dnn/logits/BiasAdd"
   input: "dnn/head/labels"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/Mul_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9085,6 +9313,7 @@ node {
   op: "Mul"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/mul"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/sub"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9112,6 +9341,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/mul_1"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/BroadcastGradientArgs"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9146,6 +9376,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9179,6 +9410,7 @@ node {
   op: "Sum"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/mul_1"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/BroadcastGradientArgs:1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9213,6 +9445,7 @@ node {
   op: "Reshape"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Sum_1"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Shape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9245,6 +9478,7 @@ node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Neg"
   op: "Neg"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Reshape_1"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9272,12 +9506,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Neg"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Reshape"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Reshape"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9313,6 +9549,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/Neg"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9347,6 +9584,7 @@ node {
   name: "dnn/head/gradients/dnn/logits/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9377,12 +9615,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/control_dependency"
   input: "^dnn/head/gradients/dnn/logits/BiasAdd_grad/BiasAddGrad"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/head/mean_squared_error/SquaredDifference_grad/tuple/control_dependency"
   input: "^dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9418,6 +9658,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/logits/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9450,6 +9691,7 @@ node {
   op: "MatMul"
   input: "dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/control_dependency"
   input: "dnn/logits/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9489,6 +9731,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_2/Relu"
   input: "dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9528,12 +9771,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/logits/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/logits/MatMul_grad/MatMul_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/logits/MatMul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/logits/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/logits/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9569,6 +9814,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/logits/MatMul_grad/MatMul_1"
   input: "^dnn/head/gradients/dnn/logits/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9604,6 +9850,7 @@ node {
   op: "ReluGrad"
   input: "dnn/head/gradients/dnn/logits/MatMul_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_2/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9630,6 +9877,7 @@ node {
   name: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9660,12 +9908,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/Relu_grad/ReluGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9701,6 +9951,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9733,6 +9984,7 @@ node {
   op: "MatMul"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_2/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9772,6 +10024,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_1/Relu"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9811,12 +10064,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/MatMul_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9852,6 +10107,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/MatMul_1"
   input: "^dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9887,6 +10143,7 @@ node {
   op: "ReluGrad"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_1/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9913,6 +10170,7 @@ node {
   name: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9943,12 +10201,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/Relu_grad/ReluGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -9984,6 +10244,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10016,6 +10277,7 @@ node {
   op: "MatMul"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_1/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10055,6 +10317,7 @@ node {
   op: "MatMul"
   input: "dnn/hiddenlayer_0/Relu"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10094,12 +10357,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/MatMul_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10135,6 +10400,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/MatMul_1"
   input: "^dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10170,6 +10436,7 @@ node {
   op: "ReluGrad"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_0/Relu"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10196,6 +10463,7 @@ node {
   name: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10226,12 +10494,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/Relu_grad/ReluGrad"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/Relu_grad/ReluGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10267,6 +10537,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/BiasAddGrad"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10299,6 +10570,7 @@ node {
   op: "MatMul"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/control_dependency"
   input: "dnn/hiddenlayer_0/kernel"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10338,6 +10610,7 @@ node {
   op: "MatMul"
   input: "dnn/input_from_feature_columns/input_layer/concat"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/control_dependency"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10377,12 +10650,14 @@ node {
   op: "NoOp"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/MatMul_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/tuple/control_dependency"
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/MatMul"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10418,6 +10693,7 @@ node {
   op: "Identity"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/MatMul_1"
   input: "^dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/tuple/group_deps"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -10451,6 +10727,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -10501,6 +10778,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -10561,6 +10839,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -10607,6 +10886,7 @@ node {
   name: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -10640,6 +10920,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -10684,6 +10965,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -10738,6 +11020,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -10781,6 +11064,7 @@ node {
   name: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -10811,6 +11095,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -10861,6 +11146,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -10921,6 +11207,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -10967,6 +11254,7 @@ node {
   name: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -11000,6 +11288,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -11044,6 +11333,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -11098,6 +11388,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -11141,6 +11432,7 @@ node {
   name: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -11171,6 +11463,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -11221,6 +11514,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -11281,6 +11575,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -11327,6 +11622,7 @@ node {
   name: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -11360,6 +11656,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -11404,6 +11701,7 @@ node {
 node {
   name: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -11458,6 +11756,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -11501,6 +11800,7 @@ node {
   name: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -11531,6 +11831,7 @@ node {
 node {
   name: "dnn/dnn/logits/kernel/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -11581,6 +11882,7 @@ node {
 node {
   name: "dnn/dnn/logits/kernel/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -11641,6 +11943,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/logits/kernel/part_0/Adagrad"
   input: "dnn/dnn/logits/kernel/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -11687,6 +11990,7 @@ node {
   name: "dnn/dnn/logits/kernel/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/logits/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -11720,6 +12024,7 @@ node {
 node {
   name: "dnn/dnn/logits/bias/part_0/Adagrad/Initializer/Const"
   op: "Const"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -11764,6 +12069,7 @@ node {
 node {
   name: "dnn/dnn/logits/bias/part_0/Adagrad"
   op: "VariableV2"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -11818,6 +12124,7 @@ node {
   op: "Assign"
   input: "dnn/dnn/logits/bias/part_0/Adagrad"
   input: "dnn/dnn/logits/bias/part_0/Adagrad/Initializer/Const"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -11861,6 +12168,7 @@ node {
   name: "dnn/dnn/logits/bias/part_0/Adagrad/read"
   op: "Identity"
   input: "dnn/dnn/logits/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -11891,6 +12199,7 @@ node {
 node {
   name: "dnn/head/Adagrad/learning_rate"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -11925,6 +12234,7 @@ node {
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/MatMul_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -11968,6 +12278,7 @@ node {
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_0/BiasAdd_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -12008,6 +12319,7 @@ node {
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/MatMul_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -12051,6 +12363,7 @@ node {
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_1/BiasAdd_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -12091,6 +12404,7 @@ node {
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/MatMul_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -12134,6 +12448,7 @@ node {
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/hiddenlayer_2/BiasAdd_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -12174,6 +12489,7 @@ node {
   input: "dnn/dnn/logits/kernel/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/logits/MatMul_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:1"
   attr {
     key: "T"
     value {
@@ -12217,6 +12533,7 @@ node {
   input: "dnn/dnn/logits/bias/part_0/Adagrad"
   input: "dnn/head/Adagrad/learning_rate"
   input: "dnn/head/gradients/dnn/logits/BiasAdd_grad/tuple/control_dependency_1"
+  device: "/job:ps/task:2"
   attr {
     key: "T"
     value {
@@ -12251,21 +12568,41 @@ node {
   }
 }
 node {
-  name: "dnn/head/Adagrad/update"
+  name: "dnn/head/Adagrad/update/NoOp"
   op: "NoOp"
-  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_0/bias/part_0/ApplyAdagrad"
-  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_0/kernel/part_0/ApplyAdagrad"
-  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_1/bias/part_0/ApplyAdagrad"
   input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_1/kernel/part_0/ApplyAdagrad"
   input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_2/bias/part_0/ApplyAdagrad"
+  device: "/job:ps/task:0"
+}
+node {
+  name: "dnn/head/Adagrad/update/NoOp_1"
+  op: "NoOp"
+  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_0/kernel/part_0/ApplyAdagrad"
+  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_1/bias/part_0/ApplyAdagrad"
+  input: "^dnn/head/Adagrad/update_dnn/logits/kernel/part_0/ApplyAdagrad"
+  device: "/job:ps/task:1"
+}
+node {
+  name: "dnn/head/Adagrad/update/NoOp_2"
+  op: "NoOp"
+  input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_0/bias/part_0/ApplyAdagrad"
   input: "^dnn/head/Adagrad/update_dnn/hiddenlayer_2/kernel/part_0/ApplyAdagrad"
   input: "^dnn/head/Adagrad/update_dnn/logits/bias/part_0/ApplyAdagrad"
-  input: "^dnn/head/Adagrad/update_dnn/logits/kernel/part_0/ApplyAdagrad"
+  device: "/job:ps/task:2"
+}
+node {
+  name: "dnn/head/Adagrad/update"
+  op: "NoOp"
+  input: "^dnn/head/Adagrad/update/NoOp"
+  input: "^dnn/head/Adagrad/update/NoOp_1"
+  input: "^dnn/head/Adagrad/update/NoOp_2"
+  device: "/job:master/task:0"
 }
 node {
   name: "dnn/head/Adagrad/value"
   op: "Const"
   input: "^dnn/head/Adagrad/update"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -12306,6 +12643,7 @@ node {
   op: "AssignAdd"
   input: "global_step"
   input: "dnn/head/Adagrad/value"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -12340,6 +12678,7 @@ node {
   name: "dnn/head/ones_like/Shape"
   op: "Shape"
   input: "dnn/head/mean_squared_error/Mul"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12368,6 +12707,7 @@ node {
 node {
   name: "dnn/head/ones_like/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -12400,6 +12740,7 @@ node {
   op: "Fill"
   input: "dnn/head/ones_like/Shape"
   input: "dnn/head/ones_like/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12431,6 +12772,7 @@ node {
 node {
   name: "dnn/head/mul/x"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -12463,6 +12805,7 @@ node {
   op: "Mul"
   input: "dnn/head/mul/x"
   input: "dnn/head/ones_like"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12488,6 +12831,7 @@ node {
 node {
   name: "dnn/head/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -12526,6 +12870,7 @@ node {
   op: "Sum"
   input: "dnn/head/mul"
   input: "dnn/head/Const"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12559,6 +12904,7 @@ node {
   op: "RealDiv"
   input: "dnn/head/weighted_loss/Sum"
   input: "dnn/head/Sum"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12578,6 +12924,7 @@ node {
 node {
   name: "loss/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -12610,6 +12957,7 @@ node {
   op: "ScalarSummary"
   input: "loss/tags"
   input: "dnn/head/weighted_loss/Sum"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12629,6 +12977,7 @@ node {
 node {
   name: "average_loss/tags"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -12661,6 +13010,7 @@ node {
   op: "ScalarSummary"
   input: "average_loss/tags"
   input: "dnn/head/truediv"
+  device: "/job:master/task:0"
   attr {
     key: "T"
     value {
@@ -12678,40 +13028,62 @@ node {
   }
 }
 node {
-  name: "init"
+  name: "init/NoOp"
   op: "NoOp"
-  input: "^dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/Assign"
-  input: "^dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/Assign"
-  input: "^dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/Assign"
   input: "^dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad/Assign"
   input: "^dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad/Assign"
-  input: "^dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/Assign"
-  input: "^dnn/dnn/logits/bias/part_0/Adagrad/Assign"
-  input: "^dnn/dnn/logits/kernel/part_0/Adagrad/Assign"
-  input: "^dnn/hiddenlayer_0/bias/part_0/Assign"
-  input: "^dnn/hiddenlayer_0/kernel/part_0/Assign"
-  input: "^dnn/hiddenlayer_1/bias/part_0/Assign"
   input: "^dnn/hiddenlayer_1/kernel/part_0/Assign"
   input: "^dnn/hiddenlayer_2/bias/part_0/Assign"
+  input: "^global_step/Assign"
+  device: "/job:ps/task:0"
+}
+node {
+  name: "init/NoOp_1"
+  op: "NoOp"
+  input: "^dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/Assign"
+  input: "^dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/Assign"
+  input: "^dnn/dnn/logits/kernel/part_0/Adagrad/Assign"
+  input: "^dnn/hiddenlayer_0/kernel/part_0/Assign"
+  input: "^dnn/hiddenlayer_1/bias/part_0/Assign"
+  input: "^dnn/logits/kernel/part_0/Assign"
+  device: "/job:ps/task:1"
+}
+node {
+  name: "init/NoOp_2"
+  op: "NoOp"
+  input: "^dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/Assign"
+  input: "^dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/Assign"
+  input: "^dnn/dnn/logits/bias/part_0/Adagrad/Assign"
+  input: "^dnn/hiddenlayer_0/bias/part_0/Assign"
   input: "^dnn/hiddenlayer_2/kernel/part_0/Assign"
   input: "^dnn/logits/bias/part_0/Assign"
-  input: "^dnn/logits/kernel/part_0/Assign"
-  input: "^global_step/Assign"
+  device: "/job:ps/task:2"
+}
+node {
+  name: "init"
+  op: "NoOp"
+  input: "^init/NoOp"
+  input: "^init/NoOp_1"
+  input: "^init/NoOp_2"
+  device: "/job:master/task:0"
 }
 node {
   name: "init_1"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "group_deps"
   op: "NoOp"
   input: "^init"
   input: "^init_1"
+  device: "/job:master/task:0"
 }
 node {
   name: "report_uninitialized_variables/IsVariableInitialized"
   op: "IsVariableInitialized"
   input: "global_step"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -12740,6 +13112,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_1"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_0/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -12768,6 +13141,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_2"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_0/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -12796,6 +13170,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_3"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_1/kernel/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -12824,6 +13199,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_4"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_1/bias/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -12852,6 +13228,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_5"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_2/kernel/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -12880,6 +13257,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_6"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_2/bias/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -12908,6 +13286,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_7"
   op: "IsVariableInitialized"
   input: "dnn/logits/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -12936,6 +13315,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_8"
   op: "IsVariableInitialized"
   input: "dnn/logits/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -12964,6 +13344,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_9"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -12992,6 +13373,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_10"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -13020,6 +13402,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_11"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -13048,6 +13431,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_12"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -13076,6 +13460,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_13"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -13104,6 +13489,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_14"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -13132,6 +13518,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_15"
   op: "IsVariableInitialized"
   input: "dnn/dnn/logits/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -13160,6 +13547,7 @@ node {
   name: "report_uninitialized_variables/IsVariableInitialized_16"
   op: "IsVariableInitialized"
   input: "dnn/dnn/logits/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -13204,7 +13592,7 @@ node {
   input: "report_uninitialized_variables/IsVariableInitialized_14"
   input: "report_uninitialized_variables/IsVariableInitialized_15"
   input: "report_uninitialized_variables/IsVariableInitialized_16"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -13240,7 +13628,7 @@ node {
   name: "report_uninitialized_variables/LogicalNot"
   op: "LogicalNot"
   input: "report_uninitialized_variables/stack"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13257,7 +13645,7 @@ node {
 node {
   name: "report_uninitialized_variables/Const"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13310,7 +13698,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/Shape"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13347,7 +13735,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13384,7 +13772,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13421,7 +13809,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13462,7 +13850,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/strided_slice/stack"
   input: "report_uninitialized_variables/boolean_mask/strided_slice/stack_1"
   input: "report_uninitialized_variables/boolean_mask/strided_slice/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -13521,7 +13909,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/Prod/reduction_indices"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13560,7 +13948,7 @@ node {
   op: "Prod"
   input: "report_uninitialized_variables/boolean_mask/strided_slice"
   input: "report_uninitialized_variables/boolean_mask/Prod/reduction_indices"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -13592,7 +13980,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/Shape_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13629,7 +14017,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13666,7 +14054,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13703,7 +14091,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13744,7 +14132,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack"
   input: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack_1"
   input: "report_uninitialized_variables/boolean_mask/strided_slice_1/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -13802,7 +14190,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/Shape_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13839,7 +14227,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13876,7 +14264,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13913,7 +14301,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -13954,7 +14342,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack"
   input: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack_1"
   input: "report_uninitialized_variables/boolean_mask/strided_slice_2/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -14013,7 +14401,7 @@ node {
   name: "report_uninitialized_variables/boolean_mask/concat/values_1"
   op: "Pack"
   input: "report_uninitialized_variables/boolean_mask/Prod"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -14048,7 +14436,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/concat/axis"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14083,7 +14471,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/concat/values_1"
   input: "report_uninitialized_variables/boolean_mask/strided_slice_2"
   input: "report_uninitialized_variables/boolean_mask/concat/axis"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -14120,7 +14508,7 @@ node {
   op: "Reshape"
   input: "report_uninitialized_variables/Const"
   input: "report_uninitialized_variables/boolean_mask/concat"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -14149,7 +14537,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/Reshape_1/shape"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14188,7 +14576,7 @@ node {
   op: "Reshape"
   input: "report_uninitialized_variables/LogicalNot"
   input: "report_uninitialized_variables/boolean_mask/Reshape_1/shape"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -14218,7 +14606,7 @@ node {
   name: "report_uninitialized_variables/boolean_mask/Where"
   op: "Where"
   input: "report_uninitialized_variables/boolean_mask/Reshape_1"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -14245,7 +14633,7 @@ node {
   name: "report_uninitialized_variables/boolean_mask/Squeeze"
   op: "Squeeze"
   input: "report_uninitialized_variables/boolean_mask/Where"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -14276,7 +14664,7 @@ node {
 node {
   name: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14310,7 +14698,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/Reshape"
   input: "report_uninitialized_variables/boolean_mask/Squeeze"
   input: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Taxis"
     value {
@@ -14345,7 +14733,7 @@ node {
 node {
   name: "report_uninitialized_resources/Const"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14379,6 +14767,7 @@ node {
 node {
   name: "concat/axis"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14412,6 +14801,7 @@ node {
   input: "report_uninitialized_variables/boolean_mask/GatherV2"
   input: "report_uninitialized_resources/Const"
   input: "concat/axis"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -14447,6 +14837,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized"
   op: "IsVariableInitialized"
   input: "global_step"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -14475,6 +14866,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_1"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_0/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14503,6 +14895,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_2"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_0/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14531,6 +14924,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_3"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_1/kernel/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -14559,6 +14953,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_4"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_1/bias/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14587,6 +14982,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_5"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_2/kernel/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14615,6 +15011,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_6"
   op: "IsVariableInitialized"
   input: "dnn/hiddenlayer_2/bias/part_0"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -14643,6 +15040,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_7"
   op: "IsVariableInitialized"
   input: "dnn/logits/kernel/part_0"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14671,6 +15069,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_8"
   op: "IsVariableInitialized"
   input: "dnn/logits/bias/part_0"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14699,6 +15098,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_9"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14727,6 +15127,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_10"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14755,6 +15156,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_11"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -14783,6 +15185,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_12"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14811,6 +15214,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_13"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14839,6 +15243,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_14"
   op: "IsVariableInitialized"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
+  device: "/job:ps/task:0"
   attr {
     key: "_class"
     value {
@@ -14867,6 +15272,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_15"
   op: "IsVariableInitialized"
   input: "dnn/dnn/logits/kernel/part_0/Adagrad"
+  device: "/job:ps/task:1"
   attr {
     key: "_class"
     value {
@@ -14895,6 +15301,7 @@ node {
   name: "report_uninitialized_variables_1/IsVariableInitialized_16"
   op: "IsVariableInitialized"
   input: "dnn/dnn/logits/bias/part_0/Adagrad"
+  device: "/job:ps/task:2"
   attr {
     key: "_class"
     value {
@@ -14939,7 +15346,7 @@ node {
   input: "report_uninitialized_variables_1/IsVariableInitialized_14"
   input: "report_uninitialized_variables_1/IsVariableInitialized_15"
   input: "report_uninitialized_variables_1/IsVariableInitialized_16"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -14975,7 +15382,7 @@ node {
   name: "report_uninitialized_variables_1/LogicalNot"
   op: "LogicalNot"
   input: "report_uninitialized_variables_1/stack"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -14992,7 +15399,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/Const"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15045,7 +15452,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/Shape"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15082,7 +15489,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15119,7 +15526,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15156,7 +15563,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15197,7 +15604,7 @@ node {
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack_1"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -15256,7 +15663,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/Prod/reduction_indices"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15295,7 +15702,7 @@ node {
   op: "Prod"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice"
   input: "report_uninitialized_variables_1/boolean_mask/Prod/reduction_indices"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -15327,7 +15734,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/Shape_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15364,7 +15771,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15401,7 +15808,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15438,7 +15845,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15479,7 +15886,7 @@ node {
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack_1"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_1/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -15537,7 +15944,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/Shape_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15574,7 +15981,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15611,7 +16018,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack_1"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15648,7 +16055,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack_2"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15689,7 +16096,7 @@ node {
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack_1"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_2/stack_2"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Index"
     value {
@@ -15748,7 +16155,7 @@ node {
   name: "report_uninitialized_variables_1/boolean_mask/concat/values_1"
   op: "Pack"
   input: "report_uninitialized_variables_1/boolean_mask/Prod"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -15783,7 +16190,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/concat/axis"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15818,7 +16225,7 @@ node {
   input: "report_uninitialized_variables_1/boolean_mask/concat/values_1"
   input: "report_uninitialized_variables_1/boolean_mask/strided_slice_2"
   input: "report_uninitialized_variables_1/boolean_mask/concat/axis"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "N"
     value {
@@ -15855,7 +16262,7 @@ node {
   op: "Reshape"
   input: "report_uninitialized_variables_1/Const"
   input: "report_uninitialized_variables_1/boolean_mask/concat"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -15884,7 +16291,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/Reshape_1/shape"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -15923,7 +16330,7 @@ node {
   op: "Reshape"
   input: "report_uninitialized_variables_1/LogicalNot"
   input: "report_uninitialized_variables_1/boolean_mask/Reshape_1/shape"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -15953,7 +16360,7 @@ node {
   name: "report_uninitialized_variables_1/boolean_mask/Where"
   op: "Where"
   input: "report_uninitialized_variables_1/boolean_mask/Reshape_1"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -15980,7 +16387,7 @@ node {
   name: "report_uninitialized_variables_1/boolean_mask/Squeeze"
   op: "Squeeze"
   input: "report_uninitialized_variables_1/boolean_mask/Where"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -16011,7 +16418,7 @@ node {
 node {
   name: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16045,7 +16452,7 @@ node {
   input: "report_uninitialized_variables_1/boolean_mask/Reshape"
   input: "report_uninitialized_variables_1/boolean_mask/Squeeze"
   input: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
-  device: "/device:CPU:0"
+  device: "/job:master/task:0/device:CPU:0"
   attr {
     key: "Taxis"
     value {
@@ -16080,14 +16487,17 @@ node {
 node {
   name: "init_2"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "init_all_tables"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "init_3"
   op: "NoOp"
+  device: "/job:master/task:0"
 }
 node {
   name: "group_deps_1"
@@ -16095,6 +16505,7 @@ node {
   input: "^init_2"
   input: "^init_3"
   input: "^init_all_tables"
+  device: "/job:master/task:0"
 }
 node {
   name: "Merge/MergeSummary"
@@ -16109,6 +16520,7 @@ node {
   input: "dnn/dnn/logits/activation"
   input: "loss"
   input: "average_loss"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -16128,6 +16540,7 @@ node {
 node {
   name: "save/Const"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16158,6 +16571,7 @@ node {
 node {
   name: "save/StringJoin/inputs_1"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16180,7 +16594,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_f0055a4b34114ffdb2149ca43646df60/part"
+        string_val: "_temp_55659735dc354a5fb08e66cef629bcf2/part"
       }
     }
   }
@@ -16190,6 +16604,7 @@ node {
   op: "StringJoin"
   input: "save/Const"
   input: "save/StringJoin/inputs_1"
+  device: "/job:master/task:0"
   attr {
     key: "N"
     value {
@@ -16215,6 +16630,7 @@ node {
 node {
   name: "save/num_shards"
   op: "Const"
+  device: "/job:master/task:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16237,7 +16653,7 @@ node {
         dtype: DT_INT32
         tensor_shape {
         }
-        int_val: 1
+        int_val: 3
       }
     }
   }
@@ -16245,7 +16661,7 @@ node {
 node {
   name: "save/ShardedFilename/shard"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16279,7 +16695,7 @@ node {
   input: "save/StringJoin"
   input: "save/ShardedFilename/shard"
   input: "save/num_shards"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16293,14 +16709,14 @@ node {
 node {
   name: "save/SaveV2/tensor_names"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 17
+            size: 5
           }
         }
       }
@@ -16319,25 +16735,13 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 17
+            size: 5
           }
         }
-        string_val: "dnn/hiddenlayer_0/bias"
-        string_val: "dnn/hiddenlayer_0/bias/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_0/kernel"
-        string_val: "dnn/hiddenlayer_0/kernel/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_1/bias"
-        string_val: "dnn/hiddenlayer_1/bias/t_0/Adagrad"
         string_val: "dnn/hiddenlayer_1/kernel"
         string_val: "dnn/hiddenlayer_1/kernel/t_0/Adagrad"
         string_val: "dnn/hiddenlayer_2/bias"
         string_val: "dnn/hiddenlayer_2/bias/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_2/kernel"
-        string_val: "dnn/hiddenlayer_2/kernel/t_0/Adagrad"
-        string_val: "dnn/logits/bias"
-        string_val: "dnn/logits/bias/t_0/Adagrad"
-        string_val: "dnn/logits/kernel"
-        string_val: "dnn/logits/kernel/t_0/Adagrad"
         string_val: "global_step"
       }
     }
@@ -16346,14 +16750,14 @@ node {
 node {
   name: "save/SaveV2/shape_and_slices"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 17
+            size: 5
           }
         }
       }
@@ -16372,25 +16776,13 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 17
+            size: 5
           }
         }
-        string_val: "128 0,128"
-        string_val: "128 0,128"
-        string_val: "5 128 0,5:0,128"
-        string_val: "5 128 0,5:0,128"
-        string_val: "32 0,32"
-        string_val: "32 0,32"
         string_val: "128 32 0,128:0,32"
         string_val: "128 32 0,128:0,32"
         string_val: "4 0,4"
         string_val: "4 0,4"
-        string_val: "32 4 0,32:0,4"
-        string_val: "32 4 0,32:0,4"
-        string_val: "1 0,1"
-        string_val: "1 0,1"
-        string_val: "4 1 0,4:0,1"
-        string_val: "4 1 0,4:0,1"
         string_val: ""
       }
     }
@@ -16402,40 +16794,16 @@ node {
   input: "save/ShardedFilename"
   input: "save/SaveV2/tensor_names"
   input: "save/SaveV2/shape_and_slices"
-  input: "dnn/hiddenlayer_0/bias/part_0/read"
-  input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/read"
-  input: "dnn/hiddenlayer_0/kernel/part_0/read"
-  input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/read"
-  input: "dnn/hiddenlayer_1/bias/part_0/read"
-  input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/read"
   input: "dnn/hiddenlayer_1/kernel/part_0/read"
   input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad/read"
   input: "dnn/hiddenlayer_2/bias/part_0/read"
   input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad/read"
-  input: "dnn/hiddenlayer_2/kernel/part_0/read"
-  input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/read"
-  input: "dnn/logits/bias/part_0/read"
-  input: "dnn/dnn/logits/bias/part_0/Adagrad/read"
-  input: "dnn/logits/kernel/part_0/read"
-  input: "dnn/dnn/logits/kernel/part_0/Adagrad/read"
   input: "global_step"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "dtypes"
     value {
       list {
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
         type: DT_FLOAT
         type: DT_FLOAT
         type: DT_FLOAT
@@ -16450,7 +16818,7 @@ node {
   op: "Identity"
   input: "save/ShardedFilename"
   input: "^save/SaveV2"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -16476,15 +16844,397 @@ node {
   }
 }
 node {
+  name: "save/ShardedFilename_1/shard"
+  op: "Const"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "save/ShardedFilename_1"
+  op: "ShardedFilename"
+  input: "save/StringJoin"
+  input: "save/ShardedFilename_1/shard"
+  input: "save/num_shards"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_1/tensor_names"
+  op: "Const"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "dnn/hiddenlayer_0/kernel"
+        string_val: "dnn/hiddenlayer_0/kernel/t_0/Adagrad"
+        string_val: "dnn/hiddenlayer_1/bias"
+        string_val: "dnn/hiddenlayer_1/bias/t_0/Adagrad"
+        string_val: "dnn/logits/kernel"
+        string_val: "dnn/logits/kernel/t_0/Adagrad"
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_1/shape_and_slices"
+  op: "Const"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "5 128 0,5:0,128"
+        string_val: "5 128 0,5:0,128"
+        string_val: "32 0,32"
+        string_val: "32 0,32"
+        string_val: "4 1 0,4:0,1"
+        string_val: "4 1 0,4:0,1"
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_1"
+  op: "SaveV2"
+  input: "save/ShardedFilename_1"
+  input: "save/SaveV2_1/tensor_names"
+  input: "save/SaveV2_1/shape_and_slices"
+  input: "dnn/hiddenlayer_0/kernel/part_0/read"
+  input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad/read"
+  input: "dnn/hiddenlayer_1/bias/part_0/read"
+  input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad/read"
+  input: "dnn/logits/kernel/part_0/read"
+  input: "dnn/dnn/logits/kernel/part_0/Adagrad/read"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/control_dependency_1"
+  op: "Identity"
+  input: "save/ShardedFilename_1"
+  input: "^save/SaveV2_1"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@save/ShardedFilename_1"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "save/ShardedFilename_2/shard"
+  op: "Const"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "save/ShardedFilename_2"
+  op: "ShardedFilename"
+  input: "save/StringJoin"
+  input: "save/ShardedFilename_2/shard"
+  input: "save/num_shards"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_2/tensor_names"
+  op: "Const"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "dnn/hiddenlayer_0/bias"
+        string_val: "dnn/hiddenlayer_0/bias/t_0/Adagrad"
+        string_val: "dnn/hiddenlayer_2/kernel"
+        string_val: "dnn/hiddenlayer_2/kernel/t_0/Adagrad"
+        string_val: "dnn/logits/bias"
+        string_val: "dnn/logits/bias/t_0/Adagrad"
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_2/shape_and_slices"
+  op: "Const"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "128 0,128"
+        string_val: "128 0,128"
+        string_val: "32 4 0,32:0,4"
+        string_val: "32 4 0,32:0,4"
+        string_val: "1 0,1"
+        string_val: "1 0,1"
+      }
+    }
+  }
+}
+node {
+  name: "save/SaveV2_2"
+  op: "SaveV2"
+  input: "save/ShardedFilename_2"
+  input: "save/SaveV2_2/tensor_names"
+  input: "save/SaveV2_2/shape_and_slices"
+  input: "dnn/hiddenlayer_0/bias/part_0/read"
+  input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad/read"
+  input: "dnn/hiddenlayer_2/kernel/part_0/read"
+  input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad/read"
+  input: "dnn/logits/bias/part_0/read"
+  input: "dnn/dnn/logits/bias/part_0/Adagrad/read"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/control_dependency_2"
+  op: "Identity"
+  input: "save/ShardedFilename_2"
+  input: "^save/SaveV2_2"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@save/ShardedFilename_2"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
   name: "save/MergeV2Checkpoints/checkpoint_prefixes"
   op: "Pack"
   input: "save/ShardedFilename"
+  input: "save/ShardedFilename_1"
+  input: "save/ShardedFilename_2"
   input: "^save/control_dependency"
-  device: "/device:CPU:0"
+  input: "^save/control_dependency_1"
+  input: "^save/control_dependency_2"
+  device: "/job:ps/task:2/device:CPU:0"
   attr {
     key: "N"
     value {
-      i: 1
+      i: 3
     }
   }
   attr {
@@ -16499,7 +17249,7 @@ node {
       list {
         shape {
           dim {
-            size: 1
+            size: 3
           }
         }
       }
@@ -16517,7 +17267,7 @@ node {
   op: "MergeV2Checkpoints"
   input: "save/MergeV2Checkpoints/checkpoint_prefixes"
   input: "save/Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:2/device:CPU:0"
   attr {
     key: "delete_old_dirs"
     value {
@@ -16531,7 +17281,9 @@ node {
   input: "save/Const"
   input: "^save/MergeV2Checkpoints"
   input: "^save/control_dependency"
-  device: "/device:CPU:0"
+  input: "^save/control_dependency_1"
+  input: "^save/control_dependency_2"
+  device: "/job:ps/task:2/device:CPU:0"
   attr {
     key: "T"
     value {
@@ -16551,14 +17303,14 @@ node {
 node {
   name: "save/RestoreV2/tensor_names"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 17
+            size: 5
           }
         }
       }
@@ -16577,25 +17329,13 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 17
+            size: 5
           }
         }
-        string_val: "dnn/hiddenlayer_0/bias"
-        string_val: "dnn/hiddenlayer_0/bias/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_0/kernel"
-        string_val: "dnn/hiddenlayer_0/kernel/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_1/bias"
-        string_val: "dnn/hiddenlayer_1/bias/t_0/Adagrad"
         string_val: "dnn/hiddenlayer_1/kernel"
         string_val: "dnn/hiddenlayer_1/kernel/t_0/Adagrad"
         string_val: "dnn/hiddenlayer_2/bias"
         string_val: "dnn/hiddenlayer_2/bias/t_0/Adagrad"
-        string_val: "dnn/hiddenlayer_2/kernel"
-        string_val: "dnn/hiddenlayer_2/kernel/t_0/Adagrad"
-        string_val: "dnn/logits/bias"
-        string_val: "dnn/logits/bias/t_0/Adagrad"
-        string_val: "dnn/logits/kernel"
-        string_val: "dnn/logits/kernel/t_0/Adagrad"
         string_val: "global_step"
       }
     }
@@ -16604,14 +17344,14 @@ node {
 node {
   name: "save/RestoreV2/shape_and_slices"
   op: "Const"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 17
+            size: 5
           }
         }
       }
@@ -16630,25 +17370,13 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 17
+            size: 5
           }
         }
-        string_val: "128 0,128"
-        string_val: "128 0,128"
-        string_val: "5 128 0,5:0,128"
-        string_val: "5 128 0,5:0,128"
-        string_val: "32 0,32"
-        string_val: "32 0,32"
         string_val: "128 32 0,128:0,32"
         string_val: "128 32 0,128:0,32"
         string_val: "4 0,4"
         string_val: "4 0,4"
-        string_val: "32 4 0,32:0,4"
-        string_val: "32 4 0,32:0,4"
-        string_val: "1 0,1"
-        string_val: "1 0,1"
-        string_val: "4 1 0,4:0,1"
-        string_val: "4 1 0,4:0,1"
         string_val: ""
       }
     }
@@ -16660,7 +17388,7 @@ node {
   input: "save/Const"
   input: "save/RestoreV2/tensor_names"
   input: "save/RestoreV2/shape_and_slices"
-  device: "/device:CPU:0"
+  device: "/job:ps/task:0/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
@@ -16669,42 +17397,6 @@ node {
           dim {
             size: 128
           }
-        }
-        shape {
-          dim {
-            size: 128
-          }
-        }
-        shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 128
-          }
-        }
-        shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 128
-          }
-        }
-        shape {
-          dim {
-            size: 32
-          }
-        }
-        shape {
-          dim {
-            size: 32
-          }
-        }
-        shape {
-          dim {
-            size: 128
-          }
           dim {
             size: 32
           }
@@ -16725,48 +17417,6 @@ node {
         shape {
           dim {
             size: 4
-          }
-        }
-        shape {
-          dim {
-            size: 32
-          }
-          dim {
-            size: 4
-          }
-        }
-        shape {
-          dim {
-            size: 32
-          }
-          dim {
-            size: 4
-          }
-        }
-        shape {
-          dim {
-            size: 1
-          }
-        }
-        shape {
-          dim {
-            size: 1
-          }
-        }
-        shape {
-          dim {
-            size: 4
-          }
-          dim {
-            size: 1
-          }
-        }
-        shape {
-          dim {
-            size: 4
-          }
-          dim {
-            size: 1
           }
         }
         shape {
@@ -16783,18 +17433,6 @@ node {
         type: DT_FLOAT
         type: DT_FLOAT
         type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
-        type: DT_FLOAT
         type: DT_INT64
       }
     }
@@ -16803,8 +17441,9 @@ node {
 node {
   name: "save/Assign"
   op: "Assign"
-  input: "dnn/hiddenlayer_0/bias/part_0"
+  input: "dnn/hiddenlayer_1/kernel/part_0"
   input: "save/RestoreV2"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -16815,7 +17454,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dnn/hiddenlayer_0/bias/part_0"
+        s: "loc:@dnn/hiddenlayer_1/kernel/part_0"
       }
     }
   }
@@ -16826,6 +17465,9 @@ node {
         shape {
           dim {
             size: 128
+          }
+          dim {
+            size: 32
           }
         }
       }
@@ -16847,8 +17489,9 @@ node {
 node {
   name: "save/Assign_1"
   op: "Assign"
-  input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
+  input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
   input: "save/RestoreV2:1"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -16859,7 +17502,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dnn/hiddenlayer_0/bias/part_0"
+        s: "loc:@dnn/hiddenlayer_1/kernel/part_0"
       }
     }
   }
@@ -16870,6 +17513,9 @@ node {
         shape {
           dim {
             size: 128
+          }
+          dim {
+            size: 32
           }
         }
       }
@@ -16891,8 +17537,9 @@ node {
 node {
   name: "save/Assign_2"
   op: "Assign"
-  input: "dnn/hiddenlayer_0/kernel/part_0"
+  input: "dnn/hiddenlayer_2/bias/part_0"
   input: "save/RestoreV2:2"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -16903,7 +17550,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dnn/hiddenlayer_0/kernel/part_0"
+        s: "loc:@dnn/hiddenlayer_2/bias/part_0"
       }
     }
   }
@@ -16913,10 +17560,7 @@ node {
       list {
         shape {
           dim {
-            size: 5
-          }
-          dim {
-            size: 128
+            size: 4
           }
         }
       }
@@ -16938,8 +17582,9 @@ node {
 node {
   name: "save/Assign_3"
   op: "Assign"
-  input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
+  input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
   input: "save/RestoreV2:3"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -16950,7 +17595,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dnn/hiddenlayer_0/kernel/part_0"
+        s: "loc:@dnn/hiddenlayer_2/bias/part_0"
       }
     }
   }
@@ -16960,10 +17605,7 @@ node {
       list {
         shape {
           dim {
-            size: 5
-          }
-          dim {
-            size: 128
+            size: 4
           }
         }
       }
@@ -16985,554 +17627,9 @@ node {
 node {
   name: "save/Assign_4"
   op: "Assign"
-  input: "dnn/hiddenlayer_1/bias/part_0"
-  input: "save/RestoreV2:4"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_1/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 32
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_5"
-  op: "Assign"
-  input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
-  input: "save/RestoreV2:5"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_1/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 32
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_6"
-  op: "Assign"
-  input: "dnn/hiddenlayer_1/kernel/part_0"
-  input: "save/RestoreV2:6"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_1/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 128
-          }
-          dim {
-            size: 32
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_7"
-  op: "Assign"
-  input: "dnn/dnn/hiddenlayer_1/kernel/part_0/Adagrad"
-  input: "save/RestoreV2:7"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_1/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 128
-          }
-          dim {
-            size: 32
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_8"
-  op: "Assign"
-  input: "dnn/hiddenlayer_2/bias/part_0"
-  input: "save/RestoreV2:8"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_2/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_9"
-  op: "Assign"
-  input: "dnn/dnn/hiddenlayer_2/bias/part_0/Adagrad"
-  input: "save/RestoreV2:9"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_2/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_10"
-  op: "Assign"
-  input: "dnn/hiddenlayer_2/kernel/part_0"
-  input: "save/RestoreV2:10"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_2/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 32
-          }
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_11"
-  op: "Assign"
-  input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
-  input: "save/RestoreV2:11"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/hiddenlayer_2/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 32
-          }
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_12"
-  op: "Assign"
-  input: "dnn/logits/bias/part_0"
-  input: "save/RestoreV2:12"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/logits/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_13"
-  op: "Assign"
-  input: "dnn/dnn/logits/bias/part_0/Adagrad"
-  input: "save/RestoreV2:13"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/logits/bias/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_14"
-  op: "Assign"
-  input: "dnn/logits/kernel/part_0"
-  input: "save/RestoreV2:14"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/logits/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_15"
-  op: "Assign"
-  input: "dnn/dnn/logits/kernel/part_0/Adagrad"
-  input: "save/RestoreV2:15"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@dnn/logits/kernel/part_0"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "use_locking"
-    value {
-      b: true
-    }
-  }
-  attr {
-    key: "validate_shape"
-    value {
-      b: true
-    }
-  }
-}
-node {
-  name: "save/Assign_16"
-  op: "Assign"
   input: "global_step"
-  input: "save/RestoreV2:16"
+  input: "save/RestoreV2:4"
+  device: "/job:ps/task:0"
   attr {
     key: "T"
     value {
@@ -17574,31 +17671,1201 @@ node {
   op: "NoOp"
   input: "^save/Assign"
   input: "^save/Assign_1"
+  input: "^save/Assign_2"
+  input: "^save/Assign_3"
+  input: "^save/Assign_4"
+  device: "/job:ps/task:0"
+}
+node {
+  name: "save/RestoreV2_1/tensor_names"
+  op: "Const"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "dnn/hiddenlayer_0/kernel"
+        string_val: "dnn/hiddenlayer_0/kernel/t_0/Adagrad"
+        string_val: "dnn/hiddenlayer_1/bias"
+        string_val: "dnn/hiddenlayer_1/bias/t_0/Adagrad"
+        string_val: "dnn/logits/kernel"
+        string_val: "dnn/logits/kernel/t_0/Adagrad"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_1/shape_and_slices"
+  op: "Const"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "5 128 0,5:0,128"
+        string_val: "5 128 0,5:0,128"
+        string_val: "32 0,32"
+        string_val: "32 0,32"
+        string_val: "4 1 0,4:0,1"
+        string_val: "4 1 0,4:0,1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_1"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_1/tensor_names"
+  input: "save/RestoreV2_1/shape_and_slices"
+  device: "/job:ps/task:1/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 128
+          }
+        }
+        shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 128
+          }
+        }
+        shape {
+          dim {
+            size: 32
+          }
+        }
+        shape {
+          dim {
+            size: 32
+          }
+        }
+        shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 1
+          }
+        }
+        shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_5"
+  op: "Assign"
+  input: "dnn/hiddenlayer_0/kernel/part_0"
+  input: "save/RestoreV2_1"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_0/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 128
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_6"
+  op: "Assign"
+  input: "dnn/dnn/hiddenlayer_0/kernel/part_0/Adagrad"
+  input: "save/RestoreV2_1:1"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_0/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 128
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_7"
+  op: "Assign"
+  input: "dnn/hiddenlayer_1/bias/part_0"
+  input: "save/RestoreV2_1:2"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_1/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 32
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_8"
+  op: "Assign"
+  input: "dnn/dnn/hiddenlayer_1/bias/part_0/Adagrad"
+  input: "save/RestoreV2_1:3"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_1/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 32
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_9"
+  op: "Assign"
+  input: "dnn/logits/kernel/part_0"
+  input: "save/RestoreV2_1:4"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/logits/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_10"
+  op: "Assign"
+  input: "dnn/dnn/logits/kernel/part_0/Adagrad"
+  input: "save/RestoreV2_1:5"
+  device: "/job:ps/task:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/logits/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/restore_shard_1"
+  op: "NoOp"
   input: "^save/Assign_10"
+  input: "^save/Assign_5"
+  input: "^save/Assign_6"
+  input: "^save/Assign_7"
+  input: "^save/Assign_8"
+  input: "^save/Assign_9"
+  device: "/job:ps/task:1"
+}
+node {
+  name: "save/RestoreV2_2/tensor_names"
+  op: "Const"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "dnn/hiddenlayer_0/bias"
+        string_val: "dnn/hiddenlayer_0/bias/t_0/Adagrad"
+        string_val: "dnn/hiddenlayer_2/kernel"
+        string_val: "dnn/hiddenlayer_2/kernel/t_0/Adagrad"
+        string_val: "dnn/logits/bias"
+        string_val: "dnn/logits/bias/t_0/Adagrad"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_2/shape_and_slices"
+  op: "Const"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 6
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 6
+          }
+        }
+        string_val: "128 0,128"
+        string_val: "128 0,128"
+        string_val: "32 4 0,32:0,4"
+        string_val: "32 4 0,32:0,4"
+        string_val: "1 0,1"
+        string_val: "1 0,1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_2"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_2/tensor_names"
+  input: "save/RestoreV2_2/shape_and_slices"
+  device: "/job:ps/task:2/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 128
+          }
+        }
+        shape {
+          dim {
+            size: 128
+          }
+        }
+        shape {
+          dim {
+            size: 32
+          }
+          dim {
+            size: 4
+          }
+        }
+        shape {
+          dim {
+            size: 32
+          }
+          dim {
+            size: 4
+          }
+        }
+        shape {
+          dim {
+            size: 1
+          }
+        }
+        shape {
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_11"
+  op: "Assign"
+  input: "dnn/hiddenlayer_0/bias/part_0"
+  input: "save/RestoreV2_2"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_0/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 128
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_12"
+  op: "Assign"
+  input: "dnn/dnn/hiddenlayer_0/bias/part_0/Adagrad"
+  input: "save/RestoreV2_2:1"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_0/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 128
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_13"
+  op: "Assign"
+  input: "dnn/hiddenlayer_2/kernel/part_0"
+  input: "save/RestoreV2_2:2"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_2/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 32
+          }
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_14"
+  op: "Assign"
+  input: "dnn/dnn/hiddenlayer_2/kernel/part_0/Adagrad"
+  input: "save/RestoreV2_2:3"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/hiddenlayer_2/kernel/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 32
+          }
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_15"
+  op: "Assign"
+  input: "dnn/logits/bias/part_0"
+  input: "save/RestoreV2_2:4"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/logits/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/Assign_16"
+  op: "Assign"
+  input: "dnn/dnn/logits/bias/part_0/Adagrad"
+  input: "save/RestoreV2_2:5"
+  device: "/job:ps/task:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dnn/logits/bias/part_0"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 1
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/restore_shard_2"
+  op: "NoOp"
   input: "^save/Assign_11"
   input: "^save/Assign_12"
   input: "^save/Assign_13"
   input: "^save/Assign_14"
   input: "^save/Assign_15"
   input: "^save/Assign_16"
-  input: "^save/Assign_2"
-  input: "^save/Assign_3"
-  input: "^save/Assign_4"
-  input: "^save/Assign_5"
-  input: "^save/Assign_6"
-  input: "^save/Assign_7"
-  input: "^save/Assign_8"
-  input: "^save/Assign_9"
+  device: "/job:ps/task:2"
+}
+node {
+  name: "save/restore_all/NoOp"
+  op: "NoOp"
+  input: "^save/restore_shard"
+  device: "/job:ps/task:0"
+}
+node {
+  name: "save/restore_all/NoOp_1"
+  op: "NoOp"
+  input: "^save/restore_shard_1"
+  device: "/job:ps/task:1"
+}
+node {
+  name: "save/restore_all/NoOp_2"
+  op: "NoOp"
+  input: "^save/restore_shard_2"
+  device: "/job:ps/task:2"
 }
 node {
   name: "save/restore_all"
   op: "NoOp"
-  input: "^save/restore_shard"
+  input: "^save/restore_all/NoOp"
+  input: "^save/restore_all/NoOp_1"
+  input: "^save/restore_all/NoOp_2"
+  device: "/job:master/task:0"
 }
 library {
   function {
     signature {
-      name: "_make_dataset_CPXijqa1ttg"
+      name: "tf_map_func_YTLnDDjS7oE"
+      input_arg {
+        name: "arg0"
+        type: DT_STRING
+      }
+      output_arg {
+        name: "decodecsv"
+        type: DT_FLOAT
+      }
+      output_arg {
+        name: "decodecsv_0"
+        type: DT_FLOAT
+      }
+      output_arg {
+        name: "decodecsv_1"
+        type: DT_STRING
+      }
+      output_arg {
+        name: "decodecsv_2"
+        type: DT_FLOAT
+      }
+      output_arg {
+        name: "decodecsv_3"
+        type: DT_FLOAT
+      }
+      output_arg {
+        name: "decodecsv_4"
+        type: DT_FLOAT
+      }
+      output_arg {
+        name: "decodecsv_5"
+        type: DT_FLOAT
+      }
+      description: "A wrapper for Defun that facilitates shape inference."
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_0"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: 0.0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_1"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: -74.0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_2"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: 40.0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_3"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: -74.0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_4"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: 40.7000007629
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_5"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_FLOAT
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            float_val: 1.0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV/record_defaults_6"
+      op: "Const"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_STRING
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_STRING
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            string_val: "nokey"
+          }
+        }
+      }
+    }
+    node_def {
+      name: "DecodeCSV"
+      op: "DecodeCSV"
+      input: "arg0"
+      input: "DecodeCSV/record_defaults_0:output:0"
+      input: "DecodeCSV/record_defaults_1:output:0"
+      input: "DecodeCSV/record_defaults_2:output:0"
+      input: "DecodeCSV/record_defaults_3:output:0"
+      input: "DecodeCSV/record_defaults_4:output:0"
+      input: "DecodeCSV/record_defaults_5:output:0"
+      input: "DecodeCSV/record_defaults_6:output:0"
+      attr {
+        key: "OUT_TYPE"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+          }
+        }
+      }
+      attr {
+        key: "field_delim"
+        value {
+          s: ","
+        }
+      }
+      attr {
+        key: "na_value"
+        value {
+          s: ""
+        }
+      }
+      attr {
+        key: "use_quote_delim"
+        value {
+          b: true
+        }
+      }
+    }
+    ret {
+      key: "decodecsv"
+      value: "DecodeCSV:output:4"
+    }
+    ret {
+      key: "decodecsv_0"
+      value: "DecodeCSV:output:3"
+    }
+    ret {
+      key: "decodecsv_1"
+      value: "DecodeCSV:output:6"
+    }
+    ret {
+      key: "decodecsv_2"
+      value: "DecodeCSV:output:5"
+    }
+    ret {
+      key: "decodecsv_3"
+      value: "DecodeCSV:output:2"
+    }
+    ret {
+      key: "decodecsv_4"
+      value: "DecodeCSV:output:1"
+    }
+    ret {
+      key: "decodecsv_5"
+      value: "DecodeCSV:output:0"
+    }
+  }
+  function {
+    signature {
+      name: "_make_dataset_3yKY23FrlsA"
       output_arg {
         name: "batchdataset"
         type: DT_VARIANT
@@ -17624,7 +18891,7 @@ library {
                 size: 1
               }
             }
-            string_val: "/content/datalab/coursera-ml-gc-tf/code/training-data-analyst/courses/machine_learning/deepdive/03_tensorflow/labs/taxi-train.csv"
+            string_val: "gs://cloud-training-demos/taxifare/ch3/train.csv"
           }
         }
       }
@@ -17993,284 +19260,6 @@ library {
     ret {
       key: "batchdataset"
       value: "BatchDataset:handle:0"
-    }
-  }
-  function {
-    signature {
-      name: "tf_map_func_YTLnDDjS7oE"
-      input_arg {
-        name: "arg0"
-        type: DT_STRING
-      }
-      output_arg {
-        name: "decodecsv"
-        type: DT_FLOAT
-      }
-      output_arg {
-        name: "decodecsv_0"
-        type: DT_FLOAT
-      }
-      output_arg {
-        name: "decodecsv_1"
-        type: DT_STRING
-      }
-      output_arg {
-        name: "decodecsv_2"
-        type: DT_FLOAT
-      }
-      output_arg {
-        name: "decodecsv_3"
-        type: DT_FLOAT
-      }
-      output_arg {
-        name: "decodecsv_4"
-        type: DT_FLOAT
-      }
-      output_arg {
-        name: "decodecsv_5"
-        type: DT_FLOAT
-      }
-      description: "A wrapper for Defun that facilitates shape inference."
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_0"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: 0.0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_1"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: -74.0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_2"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: 40.0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_3"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: -74.0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_4"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: 40.7000007629
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_5"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_FLOAT
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            float_val: 1.0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV/record_defaults_6"
-      op: "Const"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_STRING
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_STRING
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            string_val: "nokey"
-          }
-        }
-      }
-    }
-    node_def {
-      name: "DecodeCSV"
-      op: "DecodeCSV"
-      input: "arg0"
-      input: "DecodeCSV/record_defaults_0:output:0"
-      input: "DecodeCSV/record_defaults_1:output:0"
-      input: "DecodeCSV/record_defaults_2:output:0"
-      input: "DecodeCSV/record_defaults_3:output:0"
-      input: "DecodeCSV/record_defaults_4:output:0"
-      input: "DecodeCSV/record_defaults_5:output:0"
-      input: "DecodeCSV/record_defaults_6:output:0"
-      attr {
-        key: "OUT_TYPE"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-          }
-        }
-      }
-      attr {
-        key: "field_delim"
-        value {
-          s: ","
-        }
-      }
-      attr {
-        key: "na_value"
-        value {
-          s: ""
-        }
-      }
-      attr {
-        key: "use_quote_delim"
-        value {
-          b: true
-        }
-      }
-    }
-    ret {
-      key: "decodecsv"
-      value: "DecodeCSV:output:4"
-    }
-    ret {
-      key: "decodecsv_0"
-      value: "DecodeCSV:output:3"
-    }
-    ret {
-      key: "decodecsv_1"
-      value: "DecodeCSV:output:6"
-    }
-    ret {
-      key: "decodecsv_2"
-      value: "DecodeCSV:output:5"
-    }
-    ret {
-      key: "decodecsv_3"
-      value: "DecodeCSV:output:2"
-    }
-    ret {
-      key: "decodecsv_4"
-      value: "DecodeCSV:output:1"
-    }
-    ret {
-      key: "decodecsv_5"
-      value: "DecodeCSV:output:0"
     }
   }
 }

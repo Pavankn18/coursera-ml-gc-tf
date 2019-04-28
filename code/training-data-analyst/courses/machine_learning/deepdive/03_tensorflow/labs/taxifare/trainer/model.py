@@ -34,7 +34,31 @@ LABEL_COLUMN = 'fare_amount'
 DEFAULTS = [[0.0], [-74.0], [40.0], [-74.0], [40.7], [1.0], ['nokey']]
 
 # Create an input function that stores your data into a dataset
-# TODO: Add input function
+# TODID: Add input function
+
+def read_dataset(filename, mode, batch_size = 512):
+    def _input_fn():
+        def decode_csv(value_column):
+            columns = tf.decode_csv(value_column, record_defaults = DEFAULTS)
+            features = dict(zip(CSV_COLUMNS, columns))
+            label = features.pop(LABEL_COLUMN)
+            return features, label
+
+        # Create list of files that match pattern
+        file_list = tf.gfile.Glob(filename)
+
+        # Create dataset from file list
+        dataset = tf.data.TextLineDataset(file_list).map(decode_csv)
+
+        if mode == tf.estimator.ModeKeys.TRAIN:
+            num_epochs = None # indefinitely
+            dataset = dataset.shuffle(buffer_size = 10 * batch_size)
+        else:
+            num_epochs = 1 # end-of-input after this
+
+        dataset = dataset.repeat(num_epochs).batch(batch_size)
+        return dataset.make_one_shot_iterator().get_next()
+    return _input_fn
 
 # Define your feature columns
 INPUT_COLUMNS = [
@@ -65,5 +89,23 @@ def serving_input_fn():
 def train_and_evaluate(args):
     tf.summary.FileWriterCache.clear() # ensure filewriter cache is clear for TensorBoard events file
     
-    # TODO: Create tf.estimator.DNNRegressor train and evaluate function passing args['parsed_argument'] from task.py
-    
+    # TODID: Create tf.estimator.DNNRegressor train and evaluate function passing args['parsed_argument'] from task.py
+    estimator = tf.estimator.DNNRegressor(
+        model_dir = args['output_dir'],
+        feature_columns = feature_cols,
+        hidden_units = args['hidden_units'])
+    train_spec = tf.estimator.TrainSpec(
+        input_fn = read_dataset(args['train_data_paths'],
+                                batch_size = args['train_batch_size'],
+                                mode = tf.estimator.ModeKeys.TRAIN),
+        max_steps = args['train_steps'])
+    exporter = tf.estimator.LatestExporter('exporter', serving_input_fn)
+    eval_spec = tf.estimator.EvalSpec(
+        input_fn = read_dataset(args['eval_data_paths'],
+                                batch_size = 10000,
+                                mode = tf.estimator.ModeKeys.EVAL),
+        steps = None,
+        start_delay_secs = args['eval_delay_secs'],
+        throttle_secs = args['throttle_secs'],
+        exporters = exporter)
+    tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)
