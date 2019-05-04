@@ -19,8 +19,8 @@ def my_grep(line, term):
    if line.startswith(term):
       yield line
 
-PROJECT='cloud-training-demos'
-BUCKET='cloud-training-demos'
+PROJECT='qwiklabs-gcp-ef10c089125a4e8f'
+BUCKET='qwiklabs-gcp-ef10c089125a4e8f'
 
 def run():
    argv = [
