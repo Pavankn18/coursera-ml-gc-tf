@@ -1,0 +1,42 @@
+Lab1: coursera-ml-gc-tf/code/training-data-analyst/courses/machine_learning/deepdive/04_features/a_features.ipynb#
+
+Lab2: code/training-data-analyst/courses/data_analysis/lab2/python/grepc.py and grep.py
+	cd training-data-analyst/courses/data_analysis/lab2/python
+	sudo ./install_packages.sh
+	pip -V # version should be > 18
+	nano grep.py
+	python grep.py
+	cat /tmp/output-* # prints all the imports in java files
+	gsutil cp ../javahelp/src/main/java/com/google/cloud/training/dataanalyst/javahelp/*.java gs://<YOUR-BUCKET-NAME>/javahelp
+	
+	nano grepc.py
+	python grepc.py
+	# On your Cloud Console, navigate to the Dataflow section
+	gsutil cat gs://<YOUR-BUCKET-NAME>/javahelp/output-*
+	
+LAb 3: training-data-analyst/courses/data_analysis/lab2/python/is_popular.py
+	gcloud auth list
+	gcloud config list project
+	cd training-data-analyst/courses/data_analysis/lab2/python
+	Below questions to be answered from: is_popular.py
+		What custom arguments are defined? ____________________
+		What is the default output prefix? _________________________________________
+		How is the variable output_prefix in main() set? _____________________________
+		How are the pipeline arguments such as --runner set? ______________________
+		What are the key steps in the pipeline? 
+		Which of these steps happen in parallel? ____________________________________
+		Which of these steps are aggregations? ____________________________________	
+	sudo ./install_packages.sh
+	pip -V #version should be greater than 18
+	
+	./is_popular.py  #optionally pass --output_prefix=/tmp/myoutput to get ouptput files at /tmp/myoutput
+	cat /tmp/output-*
+	
+	./is_popular.py --output_prefix=/tmp/myoutput
+	ls -lrt /tmp/myoutput*
+	
+Lab5:
+	code/training-data-analyst/courses/machine_learning/deepdive/04_features/taxifeateng/feateng.ipynb
+	
+LAb 6:
+	code/training-data-analyst/courses/machine_learning/deepdive/04_features/taxifeateng/tftransform.ipynb
